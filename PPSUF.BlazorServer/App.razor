@@ -9,10 +9,13 @@
                     <MudText Typo="Typo.h5" Color="Color.Primary">Sorry, you can not access this address.</MudText>
                     @{
                         // Exception https://github.com/dotnet/aspnetcore/issues/13582
-                        NavManager.NavigateTo(Constant.LOGIN_URL, forceLoad: true);
+                        isAuthorized=false;
                     }
                 </NotAuthorized>
                 <Authorizing>
+                    @{
+                        isAuthorized=true;
+                    }
                     Loading...
                 </Authorizing>
             </AuthorizeRouteView>
@@ -26,3 +29,15 @@
         </NotFound>
     </Router>
 </CascadingAuthenticationState>
+
+@code{
+    private bool isAuthorized = true;
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if(!isAuthorized)
+        {
+            NavManager.NavigateTo(Constant.LOGIN_URL, forceLoad: true);
+        }
+    }
+}

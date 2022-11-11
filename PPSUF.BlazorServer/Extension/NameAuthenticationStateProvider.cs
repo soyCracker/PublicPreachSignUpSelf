@@ -30,7 +30,7 @@ namespace PPSUF.BlazorServer.Extension
 
         public async Task DoLogin(string id)
         {
-            await ProtectedLocalStore.SetAsync("user", id);
+            //await ProtectedLocalStore.SetAsync("user", id);
             var user = CreateClaimsPrincipal(id);
             NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(user)));
         }

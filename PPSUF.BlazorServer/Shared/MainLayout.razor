@@ -2,7 +2,7 @@
 
 <PageTitle>PPSUF.BlazorServer</PageTitle>
 
-<MudThemeProvider />
+<MudThemeProvider Theme="@MyCustomTheme"/>
 <MudDialogProvider />
 <MudSnackbarProvider />
 
@@ -37,27 +37,34 @@
         _drawerOpen = !_drawerOpen;
     }
 
-    //MudTheme MyCustomTheme = new MudTheme()
-    //    {
-    //        Palette = new Palette()
-    //        {
-    //            Primary = "#D1878B",
-    //            Secondary = Colors.Green.Accent4,
-    //            AppbarBackground = "D1878B",
-    //            // 御召茶 #43676B #5B7B82
-    //            // 浅蘇芳 #D1878B #A25768
-    //        },
-    //        //PaletteDark = new Palette()
-    //        //{
-    //        //    Primary = Colors.Blue.Lighten1,
-    //        //    AppbarBackground = Colors.Pink.Accent1,
-    //        //    Background = Colors.Grey.Darken3
-    //        //},
+    MudTheme MyCustomTheme = new MudTheme()
+    {
+        Typography = new Typography()
+        {
+            Default = new Default()
+            {
+                //FontFamily = new[] { "Poppins", "Helvetica", "Arial", "sans-serif" }
+                FontFamily = new[] { "Noto Sans TC", "微軟正黑體", "sans-serif"}
+            }
+        },
 
-    //        LayoutProperties = new LayoutProperties()
-    //        {
-    //            DrawerWidthLeft = "260px",
-    //            DrawerWidthRight = "300px"
-    //        }
-    //    };
+        Palette = new Palette()
+            {
+                Primary = "#00BCD4",
+                Secondary = Colors.Green.Accent4,
+                AppbarBackground = "#00BCD4",
+            },
+            //PaletteDark = new Palette()
+            //{
+            //    Primary = Colors.Blue.Lighten1,
+            //    AppbarBackground = Colors.Pink.Accent1,
+            //    Background = Colors.Grey.Darken3
+            //},
+
+            LayoutProperties = new LayoutProperties()
+            {
+                DrawerWidthLeft = "260px",
+                DrawerWidthRight = "300px"
+            }
+    };
 }

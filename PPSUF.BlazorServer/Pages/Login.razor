@@ -1,16 +1,15 @@
 ﻿@using Microsoft.AspNetCore.Authentication.Cookies;
 @using System.Security.Claims;
 @using Microsoft.AspNetCore.Components.Authorization;
-@using PPSUF.BlazorServer.Extension;
-@inject NameAuthenticationStateProvider NameAuthenticationStateProvider;
+
 @page "/Login"
 
 
 <MudStack AlignItems="AlignItems.Center">
 
     <MudStack AlignItems="AlignItems.Center" Row=true>
-        <MudText Typo="Typo.h3">自己</MudText>
-        <MudText Typo="Typo.h3" Color="Color.Primary">報</MudText>
+        <MudText Typo="Typo.h3" Color="Color.Primary">自己報</MudText>
+        <MudText Typo="Typo.h4">系統</MudText>
     </MudStack>
     
     <br />
@@ -36,7 +35,7 @@
     private string account;
     private string[] AccountNameArray =
     {
-        "賴育暉",
+        "賴育暉","魏筱芬"
     };
 
     private async Task<IEnumerable<string>> Search(string value)
@@ -54,7 +53,7 @@
     {
         if (AccountNameArray.SingleOrDefault(x => x==account).Count()==1)
         {
-            NameAuthenticationStateProvider.DoLogin(account);
+            //NameAuthenticationStateProvider.DoLogin(account);
         }
     }
 }
