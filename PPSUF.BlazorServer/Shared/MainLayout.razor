@@ -1,0 +1,63 @@
+﻿@inherits LayoutComponentBase
+
+<PageTitle>PPSUF.BlazorServer</PageTitle>
+
+<MudThemeProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudLayout>
+    <MudAppBar Elevation="0">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => ToggleNavMenu())" />
+        <MudSpacer />
+    </MudAppBar>
+    <MudDrawer @bind-Open="_drawerOpen" Elevation="1">
+        <MudDrawerHeader>
+            <MudText Typo="Typo.h6">松山公眾見證自己報</MudText>
+        </MudDrawerHeader>
+        <NavMenu />
+    </MudDrawer>
+    <MudMainContent>
+        <MudContainer MaxWidth="MaxWidth.Large" Class="my-16 pt-16">
+
+            @*層級傳遞參數*@
+            @*<CascadingValue>*@
+                @Body
+            @*</CascadingValue>*@
+            
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+
+@code {
+    bool _drawerOpen = true;
+
+    private void ToggleNavMenu()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+
+    //MudTheme MyCustomTheme = new MudTheme()
+    //    {
+    //        Palette = new Palette()
+    //        {
+    //            Primary = "#D1878B",
+    //            Secondary = Colors.Green.Accent4,
+    //            AppbarBackground = "D1878B",
+    //            // 御召茶 #43676B #5B7B82
+    //            // 浅蘇芳 #D1878B #A25768
+    //        },
+    //        //PaletteDark = new Palette()
+    //        //{
+    //        //    Primary = Colors.Blue.Lighten1,
+    //        //    AppbarBackground = Colors.Pink.Accent1,
+    //        //    Background = Colors.Grey.Darken3
+    //        //},
+
+    //        LayoutProperties = new LayoutProperties()
+    //        {
+    //            DrawerWidthLeft = "260px",
+    //            DrawerWidthRight = "300px"
+    //        }
+    //    };
+}

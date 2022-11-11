@@ -1,0 +1,60 @@
+﻿@using Microsoft.AspNetCore.Authentication.Cookies;
+@using System.Security.Claims;
+@using Microsoft.AspNetCore.Components.Authorization;
+@using PPSUF.BlazorServer.Extension;
+@inject NameAuthenticationStateProvider NameAuthenticationStateProvider;
+@page "/Login"
+
+
+<MudStack AlignItems="AlignItems.Center">
+
+    <MudStack AlignItems="AlignItems.Center" Row=true>
+        <MudText Typo="Typo.h3">自己</MudText>
+        <MudText Typo="Typo.h3" Color="Color.Primary">報</MudText>
+    </MudStack>
+    
+    <br />
+
+    <MudItem xs="12" sm="6" md="4">
+        <MudPaper Class="pa-4" Elevation="4" Width="400px">
+
+            <MudStack AlignItems="AlignItems.Center" Row=true>
+                <MudAutocomplete T="string" Label="輸入你的全名" @bind-Value="account" SearchFunc="@Search" />
+                <br />
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="LoginProcess">登入</MudButton>
+            </MudStack>
+
+            
+            
+        </MudPaper>
+    </MudItem>
+</MudStack>
+
+
+
+@code {
+    private string account;
+    private string[] AccountNameArray =
+    {
+        "賴育暉",
+    };
+
+    private async Task<IEnumerable<string>> Search(string value)
+    {
+        // In real life use an asynchronous function for fetching data from an api.
+        await Task.Delay(5);
+
+        // if text is null or empty, show complete list
+        if (string.IsNullOrEmpty(value))
+            return AccountNameArray;
+        return AccountNameArray.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+    }
+
+    private async Task LoginProcess()
+    {
+        if (AccountNameArray.SingleOrDefault(x => x==account).Count()==1)
+        {
+            NameAuthenticationStateProvider.DoLogin(account);
+        }
+    }
+}

@@ -1,0 +1,28 @@
+﻿@using PPSUF.Service.Base;
+@inject NavigationManager NavManager
+
+<CascadingAuthenticationState>
+    <Router AppAssembly="@typeof(App).Assembly">
+        <Found Context="routeData">
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+                <NotAuthorized>
+                    <MudText Typo="Typo.h5" Color="Color.Primary">Sorry, you can not access this address.</MudText>
+                    @{
+                        // Exception https://github.com/dotnet/aspnetcore/issues/13582
+                        NavManager.NavigateTo(Constant.LOGIN_URL, forceLoad: true);
+                    }
+                </NotAuthorized>
+                <Authorizing>
+                    Loading...
+                </Authorizing>
+            </AuthorizeRouteView>
+            <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+        </Found>
+        <NotFound>
+            <PageTitle>Not found</PageTitle>
+            <LayoutView Layout="@typeof(MainLayout)">
+                <MudText Typo="Typo.h3" Color="Color.Primary">Sorry, there's nothing at this address.</MudText>
+            </LayoutView>
+        </NotFound>
+    </Router>
+</CascadingAuthenticationState>
