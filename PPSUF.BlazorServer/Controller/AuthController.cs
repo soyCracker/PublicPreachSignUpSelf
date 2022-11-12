@@ -1,9 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using PPSUF.Service.Models.Req;
+using PPSUF.Service.Models.Res;
 using PPSUF.Service.Services;
 
 namespace PPSUF.BlazorServer.Controller
@@ -26,19 +24,24 @@ namespace PPSUF.BlazorServer.Controller
         }
 
         [HttpPost]
-        public async Task<IActionResult> LoginAsync()
+        public async Task<MessageModel<bool>> Login(AuthLoginReq req)
         {
-            /*if (AccountNameArray.SingleOrDefault(x => x==account).Count()==1)
-            {
-
-            }*/  
             if(authService.DoLogin("id"))
             {
                 var claims = authService.CreateClaimsPrincipal("id");
                 await HttpContext.SignInAsync(claims); 
+                return new MessageModel<bool>
+                {
+                    Msg = "Good",
+                    Data = true
+                };
             }
-            
-            return Ok(new { Value = true, ErrorCode = 0, Res = "Good Auth" });
+            return new MessageModel<bool>
+            {
+                Success = false,
+                Msg = "Bad",
+                Data = false
+            };
         }
     }
 }

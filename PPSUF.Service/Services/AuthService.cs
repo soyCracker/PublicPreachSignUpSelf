@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace PPSUF.Service.Services
 {
@@ -19,7 +20,7 @@ namespace PPSUF.Service.Services
             {
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
-            ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Cookies");
+            ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             return new ClaimsPrincipal(claimsIdentity);
         }
 

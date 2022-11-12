@@ -16,6 +16,18 @@ builder.Services.AddScoped<AuthenticationStateProvider, NameAuthenticationStateP
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
 builder.Services.AddControllers();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddHttpClient("PPSUF")
+    .ConfigurePrimaryHttpMessageHandler(() =>
+        new HttpClientHandler
+        {
+            ClientCertificateOptions = ClientCertificateOption.Manual,
+            ServerCertificateCustomValidationCallback = 
+                (httpRequestMessage, cert, cetChain, policyErrors) =>
+                {   
+                    return true;
+                }
+        });
 
 var app = builder.Build();
 
