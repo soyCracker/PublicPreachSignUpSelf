@@ -1,6 +1,6 @@
+using Blazored.SessionStorage;
 using Microsoft.AspNetCore.Components.Authorization;
 using MudBlazor.Services;
-using PPSUF.BlazorServer.Data;
 using PPSUF.BlazorServer.Extension;
 using PPSUF.Service.Services;
 
@@ -11,23 +11,9 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddMudServices();
 builder.Services.SetAuth();
-builder.Services.AddSingleton<AuthService>();
+builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<AuthenticationStateProvider, NameAuthenticationStateProvider>();
-builder.Services.AddDistributedMemoryCache();
-builder.Services.AddSession();
-builder.Services.AddControllers();
-builder.Services.AddHttpContextAccessor();
-builder.Services.AddHttpClient("PPSUF")
-    .ConfigurePrimaryHttpMessageHandler(() =>
-        new HttpClientHandler
-        {
-            ClientCertificateOptions = ClientCertificateOption.Manual,
-            ServerCertificateCustomValidationCallback = 
-                (httpRequestMessage, cert, cetChain, policyErrors) =>
-                {   
-                    return true;
-                }
-        });
+builder.Services.AddBlazoredSessionStorage();
 
 var app = builder.Build();
 
@@ -45,7 +31,6 @@ app.UseStaticFiles();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseRouting();
-app.MapControllers();
 app.MapBlazorHub();
 app.MapRazorPages();
 app.MapFallbackToPage("/_Host");

@@ -1,13 +1,10 @@
-﻿@using Microsoft.AspNetCore.Authentication.Cookies;
-@using System.Security.Claims;
+﻿@using System.Security.Claims;
 @using Microsoft.AspNetCore.Components.Authorization;
+@using PPSUF.BlazorServer.Extension
 @using PPSUF.Service.Models.Req;
-@using PPSUF.Service.Models.Res;
-@using System.Text.Json;
-@using System.Text;
-@inject NavigationManager Navigator
 
-@inject IHttpClientFactory ClientFactory
+@inject NavigationManager Navigator
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 @page "/Login"
 
@@ -27,7 +24,7 @@
             <MudStack AlignItems="AlignItems.Center" Row=true>
                 <MudAutocomplete T="string" Label="輸入你的全名" @bind-Value="username" SearchFunc="@Search" />
                 <br />
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="LoginProcess">登入</MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="DoLogin">登入</MudButton>
             </MudStack>
 
             
@@ -56,29 +53,18 @@
         return AccountNameArray.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
     }
 
-    private async Task LoginProcess()
+    private async Task DoLogin()
     {
-        bool match = AccountNameArray.Where(x => x==username).Count()==1;
-        if (match)
+        try
         {
-            var baseurl = Navigator.BaseUri;
-            var request = new HttpRequestMessage(HttpMethod.Post, 
-                Navigator.BaseUri + "api/auth/login");
-
-            AuthLoginReq req = new AuthLoginReq
-            {
-                Username = username
-            };
-            string json = JsonSerializer.Serialize(req);
-            request.Content = new StringContent(json, Encoding.UTF8, "application/json");
-            var client = ClientFactory.CreateClient("PPSUF");
-            var response = await client.SendAsync(request);
-            var result = await response.Content.ReadAsStringAsync();
-            var msg = JsonSerializer.Deserialize<MessageModel<bool>>(result);
-            if(msg.Success)
-            {
-                Navigator.NavigateTo("/");
-            }
+            AuthLoginReq req = new AuthLoginReq();
+            req.Username = username;
+            await ((NameAuthenticationStateProvider)AuthenticationStateProvider).Login(req);
+            Navigator.NavigateTo("/");
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex.Message + " - " + ex.StackTrace);
         }
     }
 }
